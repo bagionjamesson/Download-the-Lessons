@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Download and Answer the Following</title>
+    <style>
+        /* --- General Educational Styling --- */
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+            font-family: Georgia, 'Times New Roman', Times, serif; /* Formal font for education */
+            background-color: #f8f9fa; /* Very light, clean background */
+            color: #333;
+        }
+
+        .portal-container {
+            width: 90%;
+            max-width: 900px;
+            padding: 40px;
+            background-color: #fff;
+            border: 1px solid #dee2e6;
+            border-radius: 12px;
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.05);
+        }
+
+        h1 {
+            text-align: center;
+            color: #004c8c; /* Dark Academic Blue */
+            margin-bottom: 30px;
+            font-size: 2.2em;
+            border-bottom: 2px solid #004c8c;
+            padding-bottom: 10px;
+        }
+
+        .resource-section {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 30px;
+            justify-content: center;
+        }
+
+        .resource-card {
+            flex: 1 1 40%; /* Allows two cards per row on wider screens */
+            min-width: 350px;
+            padding: 25px;
+            border: 1px solid #e9ecef;
+            border-radius: 8px;
+            background-color: #f0f4f7; /* Light grey/blue background for contrast */
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.05);
+            transition: transform 0.2s;
+        }
+        
+        .resource-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+        }
+
+        .resource-card h2 {
+            font-size: 1.5em;
+            color: #007bff; /* Secondary academic blue */
+            margin-top: 0;
+            margin-bottom: 15px;
+        }
+
+        .resource-card p.subject {
+            font-style: italic;
+            color: #6c757d;
+            margin-bottom: 20px;
+            border-bottom: 1px dashed #ced4da;
+            padding-bottom: 10px;
+        }
+
+
+        /* --- Button Styling (Academic Look) --- */
+        .download-btn {
+            width: 100%;
+            padding: 12px 20px;
+            font-size: 17px;
+            font-weight: bold;
+            color: white;
+            background-color: #28a745; /* Green for 'Go' / 'Action' */
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 3px 5px rgba(0, 0, 0, 0.1);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .download-btn:hover {
+            background-color: #1e7e34;
+        }
+
+        .download-btn .icon {
+            margin-right: 10px;
+            font-size: 1.1em;
+        }
+
+        /* --- State Styling --- */
+        .downloading {
+            background-color: #ffc107; /* Caution Yellow */
+            cursor: not-allowed;
+            color: #333;
+            box-shadow: none;
+            animation: pulse 1.5s infinite;
+        }
+
+        .success {
+            background-color: #007bff; /* Success Blue */
+            cursor: default;
+        }
+
+        /* Keyframes for the pulse effect */
+        @keyframes pulse {
+            0% { transform: scale(1); opacity: 1; }
+            50% { transform: scale(1.01); opacity: 0.95; }
+            100% { transform: scale(1); opacity: 1; }
+        }
+    </style>
+</head>
+<body>
+    <div class="portal-container">
+        <h1>Download and Answer the Following</h1>
+        
+        <div class="resource-section">
+            
+            <div class="resource-card">
+                <p class="subject">Subject: Music History 🎶</p>
+                <h2>Download: History Background of Romantic Music</h2>
+                <p>This comprehensive paper explores the social, cultural, and political influences that shaped the Romantic era in music (1800–1910).</p>
+                
+                <button id="musicDownloadButton" class="download-btn">
+                    <span class="icon">⬇️</span> Download Music Resource
+                </button>
+            </div>
+
+            <div class="resource-card">
+                <p class="subject">Subject: Health & Ethics ⚕️</p>
+                <h2>Download: A Day That Taught a Lesson</h2>
+                <p>A case study analyzing an important situation and the health-related lesson it imparts, focusing on personal responsibility and ethical decisions.</p>
+                
+                <button id="healthDownloadButton" class="download-btn">
+                    <span class="icon">⬇️</span> Download Health Resource
+                </button>
+            </div>
+
+        </div>
+    </div>
+
+    <script>
+        // --- JavaScript Functionality ---
+        document.addEventListener('DOMContentLoaded', () => {
+            
+            // Define download URLs for each resource
+            // 🛑 IMPORTANT: REPLACE THESE PLACEHOLDER URLs WITH YOUR ACTUAL FILES!
+            const resources = {
+                music: {
+                    button: document.getElementById('musicDownloadButton'),
+                    url: 'https://example.com/romantic_music_history.pdf', // REPLACE
+                    initialText: '<span class="icon">⬇️</span> Download Music Resource',
+                    downloadingText: '<span class="icon">⏳</span> Preparing Music File...',
+                    successText: '<span class="icon">✅</span> Music Download Started!',
+                    fileName: 'Romantic_Music_History.pdf'
+                },
+                health: {
+                    button: document.getElementById('healthDownloadButton'),
+                    url: 'https://example.com/day_that_taught_a_lesson.doc', // REPLACE
+                    initialText: '<span class="icon">⬇️</span> Download Health Resource',
+                    downloadingText: '<span class="icon">⏳</span> Preparing Health File...',
+                    successText: '<span class="icon">✅</span> Health Download Started!',
+                    fileName: 'A_Day_That_Taught_a_Lesson.doc'
+                }
+            };
+
+            const downloadFile = (resourceKey) => {
+                const res = resources[resourceKey];
+                const button = res.button;
+
+                // Guard against multiple clicks
+                if (button.classList.contains('downloading') || button.classList.contains('success')) {
+                    return;
+                }
+
+                // 1. Change to 'downloading' state
+                button.classList.remove('download-btn');
+                button.classList.add('downloading');
+                button.innerHTML = res.downloadingText;
+
+                // 2. Wait 2 seconds
+                setTimeout(() => {
+                    // 3. Initiate the file download
+                    const link = document.createElement('a');
+                    link.href = res.url;
+                    link.setAttribute('download', res.fileName); // Set custom filename
+                    
+                    document.body.appendChild(link);
+                    link.click();
+                    document.body.removeChild(link);
+
+                    // 4. Change to 'success' state
+                    button.classList.remove('downloading');
+                    button.classList.add('success');
+                    button.innerHTML = res.successText;
+
+                    // 5. Revert the button back to the original state after 5 seconds
+                    setTimeout(() => {
+                        button.classList.remove('success');
+                        button.classList.add('download-btn');
+                        button.innerHTML = res.initialText;
+                    }, 5000); 
+
+                }, 2000); // 2-second delay
+            };
+            
+            // Attach listeners to both buttons
+            resources.music.button.addEventListener('click', () => downloadFile('music'));
+            resources.health.button.addEventListener('click', () => downloadFile('health'));
+        });
+    </script>
+</body>
+</html>
