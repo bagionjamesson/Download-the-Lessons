@@ -166,7 +166,7 @@
                     initialText: '<span class="icon">⬇️</span> Download Music Resource',
                     downloadingText: '<span class="icon">⏳</span> Preparing Music File...',
                     successText: '<span class="icon">✅</span> Music Download Started!',
-                    fileName: 'Romantic_Music_History.pdf'
+                    fileName: 'Historical Background of Romantic Music.pdf'
                 },
                 health: {
                     button: document.getElementById('healthDownloadButton'),
@@ -174,7 +174,7 @@
                     initialText: '<span class="icon">⬇️</span> Download Health Resource',
                     downloadingText: '<span class="icon">⏳</span> Preparing Health File...',
                     successText: '<span class="icon">✅</span> Health Download Started!',
-                    fileName: 'A_Day_That_Taught_a_Lesson.doc'
+                    fileName: 'Day That Taught a Lesson.pdf'
                 }
             };
 
